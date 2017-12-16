@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+
+<html lang="en-us">
+
+  <head>
+
+    <meta charset="UTF-8">
+    <title>To Do App!</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+  <style>
+  body{
+    width: 95%;
+  }
+#myGif{
+    width: 850px; 
+    /*//height: 700px;*/
+    background-color: #eeedef;
+    padding: 10px 50px 50px 50px;
+    margin: auto; 
+    border: 2px solid black; 
+  }
+  h1{
+    background-color: #2c3e50; 
+    text-align: center;
+    color: white;
+  }
+  h3{
+  	color: red;
+  }
+
+  #button{
+  	display: inline-block;
+  	padding-top: 30px;
+  }
+  .topics:hover{
+  	background-color: #cdedf2;
+  }
+ #search{
+    padding: 10px 30px 30px 30px; 
+  	float: right; 
+  	text-align: right;
+  }
+
+  </style>
+
+  </style>
+</head>
+<body>
+  <nav class="navbar navbar-toggleable-md navbar-light bg-faded">
+
+    <form class="form-inline my-2 my-lg-0" id="search">
+      <input class="form-control mr-sm-2" type="text" placeholder="Search" id="input">
+      <button class="btn btn-outline-success my-2 my-sm-0" type="submit" id="keyed">Search</button>
+    </form>
+  </div>
+</nav>
+	<div id = "myGif">
+		<div style ="background-color: #20315A; color: white;" class="jumbotron jumbotron-fluid">
+  <div class="container">
+    <h1 class="display-3">Random Giphys</h1>
+  </div>
+</div>
+
+	
+	<div id="button">
+		<h3>Pick a Gif to get started:</h3>
+		<button class="topics" data-topic="fruits">Fruits</button>
+		<button class="topics" data-topic="cats">Cats</button>
+		<button class="topics" data-topic="dogs">Dogs</button>
+		<button class="topics" data-topic="horses">Horses </button>
+   
+		
+	</div>
+	<div id ="show-gif"></div>
+</div>
+	
+	
+	
+
+</body>
+<script type="text/javascript">
+$(document).ready(function(){
+
+
+var topics = ["fruits", "cats", "dogs", "horses", "chickens"]; 
+
+function createbutton(){
+for(var i = 0; i<topics.length; i++){
+
+          var searchItem =$("<button>");
+             searchItem.addClass("topics"); 
+           searchItem.attr("data-topic", topics[i]);
+        searchItem = $(searchItem).prepend(userSearch); 
+        $("#button").prepend(searchItem);
+      
+          $("#show-gif").append("#button"); 
+            
+};
+};
+
+
+function myApi() {
+    $('.topics').on("click", function() {
+
+      var top = $(this).attr("data-topic"); 
+      var queryURL = "https://api.giphy.com/v1/gifs/search?q=" +
+        top + "&api_key=dc6zaTOxFJmzC&limit=10";
+
+      $.ajax({
+          url: queryURL,
+          method: "GET"
+        })
+          .done(function(response) {
+          var results = response.data; //data from API
+          // console.log(results);
+
+         
+             for (var i = 0; i < results.length; i++) {
+              //console.log(results[i]);
+
+            // Creating and storing a div tag
+            var topicDiv = $("<div>");
+
+            // Creating a paragraph tag with the result item's rating
+            var p = $("<p>").text("Rating: " + results[i].rating);
+
+            // Creating and storing an image tag
+            var topicImage = $("<img>");
+            // Setting the src attribute of the image to a property pulled off the result item
+            topicImage.attr("src", results[i].images.fixed_height.url);
+
+            // Appending the paragraph and image tag to the topicdIv
+            topicDiv.append(p);
+            topicDiv.append(topicImage);
+
+            // Prependng the topicdIv to the HTML page in the ""#show-gif" div
+            $("#show-gif").prepend(topicDiv);
+
+          }
+        });
+
+        
+        });
+};
+myApi();
+
+$("#keyed").on("click", function(event){
+
+   alert("click");
+         
+   //        count = ""
+       event.preventDefault(); 
+       var userSearch = $("#input").val().trim();
+
+          alert($("#input").val());
+          alert(userSearch);
+         
+   createbutton();
+   myApi();
+
+     }); 
+   
+  }); 
+          
+   
+
+
+</script>
+</html> 
+
+    <style></style>
